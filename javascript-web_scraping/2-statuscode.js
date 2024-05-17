@@ -1,13 +1,12 @@
 #!/usr/bin/node
-/* Prints the status code of a GET request. */
+/* prints the status code of a GET request. */
 
-/* eslint-disable */
-const args = process.argv.slice(2);
 const request = require('request');
+const url = process.argv[2];
 
-request(args[0], (error, response) => {
-  if (error) {
-    console.log(error);
+request(url, (err, response) => {
+  if (err) {
+    console.log(err);
   } else {
     console.log('code:', response.statusCode);
   }

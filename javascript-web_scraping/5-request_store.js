@@ -1,22 +1,18 @@
 #!/usr/bin/node
-/* Requests a URL and stores the response in a file. */
+/* That gets the contents of a webpage and stores it in a file. */
 
-/* eslint-disable */
 const request = require('request');
-const args = process.argv.slice(2);
 const fs = require('fs');
+const url = process.argv[2];
+const filePath = process.argv[3];
 
-const url = args[0];
-const filePath = args[1];
-
-request(url, (error, response, body) => {
-  if (error) {
-    console.error('Error:', error);
-  } else if (response.statusCode !== 200) {
-    console.error('Status:', response.statusCode);
-  } else {
-    fs.writeFile(filePath, body, 'utf8', (err) => {
-      if (err) console.error('Error writing file:', err);
-    });
+request(url, (err, response, body) => {
+  if (err) {
+    console.log(err);
   }
+  fs.writeFile(filePath, body, 'utf8', (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
 });

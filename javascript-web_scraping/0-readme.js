@@ -1,11 +1,10 @@
 #!/usr/bin/node
-/* Reads and prints the content of a file. */
+/* reads and prints the content of a file. */
 
-/* eslint-disable */
-const args = process.argv.slice(2);
 const fs = require('fs');
+const filePath = process.argv[2];
 
-fs.readFile(args[0], 'utf8', (err, data) => {
+fs.readFile(filePath, 'utf8', (err, data) => {
   if (err) {
     console.log(err);
   } else {
