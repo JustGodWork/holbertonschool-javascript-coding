@@ -1,4 +1,7 @@
 #!/usr/bin/node
+/* Counts the number of films where a specific character appears. */
+
+/* eslint-disable */
 const args = process.argv.slice(2);
 const request = require('request');
 

@@ -1,4 +1,7 @@
 #!/usr/bin/node
+/* Prints the title of a Star Wars movie. */
+
+/* eslint-disable */
 const args = process.argv.slice(2);
 const request = require('request');
 

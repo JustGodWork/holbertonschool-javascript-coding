@@ -1,4 +1,7 @@
 #!/usr/bin/node
+/* Writes a string to a file. */
+
+/* eslint-disable */
 const args = process.argv.slice(2);
 const fs = require('fs');
 

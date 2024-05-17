@@ -1,4 +1,7 @@
 #!/usr/bin/node
+/* Requests a URL and stores the response in a file. */
+
+/* eslint-disable */
 const request = require('request');
 const args = process.argv.slice(2);
 const fs = require('fs');

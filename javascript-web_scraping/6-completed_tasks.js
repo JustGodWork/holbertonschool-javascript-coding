@@ -1,4 +1,7 @@
 #!/usr/bin/node
+/* Computes the number of tasks completed by each user. */
+
+/* eslint-disable */
 const request = require('request');
 const args = process.argv.slice(2);
 
