@@ -12,20 +12,20 @@ const DB_FILE = process.argv[2];
  */
 async function getStudents(database) {
   const data = await fs.readFile(database, 'utf8');
-  const lines = data.split('\n').filter(line => line);
-  const students = lines.map(line => line.split(','));
-  const csStudents = students.filter(student => student[3] === 'CS');
-  const sweStudents = students.filter(student => student[3] === 'SWE');
+  const lines = data.split('\n').filter((line) => line);
+  const students = lines.map((line) => line.split(','));
+  const csStudents = students.filter((student) => student[3] === 'CS');
+  const sweStudents = students.filter((student) => student[3] === 'SWE');
   const totalStudents = students.length;
   const totalCsStudents = csStudents.length;
   const totalSweStudents = sweStudents.length;
-  const csStudentsList = csStudents.map(student => student[0]).join(', ');
-  const sweStudentsList = sweStudents.map(student => student[0]).join(', ');
+  const csStudentsList = csStudents.map((student) => student[0]).join(', ');
+  const sweStudentsList = sweStudents.map((student) => student[0]).join(', ');
 
   return [
     `Number of students: ${totalStudents}`,
     `Number of students in CS: ${totalCsStudents}. List: ${csStudentsList}`,
-    `Number of students in SWE: ${totalSweStudents}. List: ${sweStudentsList}`
+    `Number of students in SWE: ${totalSweStudents}. List: ${sweStudentsList}`,
   ].join('\n');
 }
 
@@ -34,14 +34,14 @@ async function getStudents(database) {
  * - /: returns a welcome message
  * - /students: returns the list of students from the database (CSV format)
  */
-const app = http.createServer(async (req, res) => {
+const app = http.createServer((req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   if (req.url === '/') {
     res.write('Hello Holberton School!');
   } else if (req.url === '/students') {
     res.write('This is the list of our students\n');
     try {
-      const students = await getStudents(DB_FILE);
+      const students = getStudents(DB_FILE);
       res.write(students);
     } catch (err) {
       res.write('Cannot load the database');
