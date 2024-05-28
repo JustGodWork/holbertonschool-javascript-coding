@@ -1,4 +1,3 @@
-/*eslint-disable*/
 const express = require('express');
 const fs = require('fs').promises;
 
@@ -39,10 +38,10 @@ app.get('/students', async (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   res.write('This is the list of our students\n');
   try {
-      const students = await getStudents(DB_FILE);
-      res.write(students);
+    const students = await getStudents(DB_FILE);
+    res.write(students);
   } catch (err) {
-      res.write('Cannot load the database');
+    res.write('Cannot load the database');
   }
   res.end();
 });
