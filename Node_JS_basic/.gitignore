@@ -2,3 +2,5 @@ node_modules/
 *.yaml
 .eslintrc.js
 babel.config.js
+server.js
+database.csv
