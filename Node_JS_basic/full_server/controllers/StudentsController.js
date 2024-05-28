@@ -1,10 +1,10 @@
-const utils = require('../utils');
+import readDatabase from '../utils';
 
-module.exports = class StudentsController {
+export default class StudentsController {
   static async getAllStudents(req, res) {
     res.setHeader('Content-Type', 'text/plain');
     try {
-      const studentsByField = await utils.readDatabase(process.argv[2]);
+      const studentsByField = await readDatabase(process.argv[2]);
       let response = 'This is the list of our students\n';
       studentsByField.forEach(({ field, students }) => {
         response += `Number of students in ${field}: ${students.length}. List: ${students.join(', ')}\n`;
@@ -22,11 +22,11 @@ module.exports = class StudentsController {
       return;
     }
     try {
-      const studentsByField = await utils.readDatabase(process.argv[2]);
+      const studentsByField = await readDatabase(process.argv[2]);
       const studentsInMajor = studentsByField.find(({ field }) => field === req.params.major);
       res.status(200).send(`List: ${studentsInMajor.students.join(', ')}`);
     } catch (err) {
       res.status(500).send('Cannot load the database');
     }
   }
-};
+}

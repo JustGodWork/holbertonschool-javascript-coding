@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
 
-function readDatabase(database) {
+export default function readDatabase(database) {
   return new Promise((resolve, reject) => {
     fs.readFile(database, 'utf8').then((data) => {
       const lines = data.split('\n').filter((line) => line);
@@ -14,7 +14,3 @@ function readDatabase(database) {
     }).catch((error) => reject(error));
   });
 }
-
-module.exports = {
-  readDatabase,
-};
