@@ -34,14 +34,14 @@ async function getStudents(database) {
  * - /: returns a welcome message
  * - /students: returns the list of students from the database (CSV format)
  */
-const app = http.createServer((req, res) => {
+const app = http.createServer(async (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   if (req.url === '/') {
     res.write('Hello Holberton School!');
   } else if (req.url === '/students') {
     res.write('This is the list of our students\n');
     try {
-      const students = getStudents(DB_FILE);
+      const students = await getStudents(DB_FILE);
       res.write(students);
     } catch (err) {
       res.write('Cannot load the database');
