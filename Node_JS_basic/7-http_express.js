@@ -1,46 +1,54 @@
 /*eslint-disable*/
 const express = require('express');
-const fs = require('fs');
-const readline = require('readline');
+const fs = require('fs').promises;
 
 const app = express();
-const port = 1245;
+const PORT = 1245;
+const DB_FILE = process.argv[2];
+
+/**
+ * Get the students from the database file (CSV format)
+ * @param {string} database
+ * @returns {string}
+ */
+async function getStudents(database) {
+  const data = await fs.readFile(database, 'utf8');
+  const lines = data.split('\n').filter((line) => line);
+  const students = lines.map((line) => line.split(','));
+  const csStudents = students.filter((student) => student[3] === 'CS');
+  const sweStudents = students.filter((student) => student[3] === 'SWE');
+  const totalStudents = students.length;
+  const totalCsStudents = csStudents.length;
+  const totalSweStudents = sweStudents.length;
+  const csStudentsList = csStudents.map((student) => student[0]).join(', ');
+  const sweStudentsList = sweStudents.map((student) => student[0]).join(', ');
+
+  return [
+    `Number of students: ${totalStudents}`,
+    `Number of students in CS: ${totalCsStudents}. List: ${csStudentsList}`,
+    `Number of students in SWE: ${totalSweStudents}. List: ${sweStudentsList}`,
+  ].join('\n');
+}
 
 app.get('/', (req, res) => {
+  res.setHeader('Content-Type', 'text/plain');
   res.send('Hello Holberton School!');
 });
 
-app.get('/students', (req, res) => {
-  const path = process.argv[2];
-  const rl = readline.createInterface({
-    input: fs.createReadStream(path),
-    output: process.stdout,
-    terminal: false,
-  });
-
-  let countCS = 0; let countSWE = 0; const namesCS = []; const namesSWE = [];
-
-  rl.on('line', (line) => {
-    const [firstName, , , field] = line.split(',').map((item) => item.trim());
-
-    if (field === 'CS') { countCS++; namesCS.push(firstName); }
-    else if (field === 'SWE') { countSWE++; namesSWE.push(firstName); }
-  });
-
-  rl.on('close', () => {
-    if (countCS + countSWE > 0) {
-      res.send(`This is the list of our students
-        Number of students: ${countCS + countSWE}
-        Number of students in CS: ${countCS}. List: ${namesCS.join(', ')}
-        Number of students in SWE: ${countSWE}. List: ${namesSWE.join(', ')}`);
-    } else {
-      res.send('This is the list of our students\nNumber of students: 0');
-    }
-  });
+app.get('/students', async (req, res) => {
+  res.setHeader('Content-Type', 'text/plain');
+  res.write('This is the list of our students\n');
+  try {
+      const students = await getStudents(DB_FILE);
+      res.write(students);
+  } catch (err) {
+      res.write('Cannot load the database');
+  }
+  res.end();
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
 
 module.exports = app;
