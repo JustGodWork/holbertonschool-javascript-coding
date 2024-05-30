@@ -16,7 +16,7 @@ async function getStudents(database) {
   const students = lines.map((line) => line.split(','));
   const csStudents = students.filter((student) => student[3] === 'CS');
   const sweStudents = students.filter((student) => student[3] === 'SWE');
-  const totalStudents = students.length;
+  const totalStudents = csStudents.length + sweStudents.length;
   const totalCsStudents = csStudents.length;
   const totalSweStudents = sweStudents.length;
   const csStudentsList = csStudents.map((student) => student[0]).join(', ');
