@@ -6,8 +6,13 @@ export default class StudentsController {
     try {
       const studentsByField = await readDatabase(process.argv[2]);
       let response = 'This is the list of our students\n';
+      const csStudents = studentsByField.find(({ field }) => field === 'CS');
+      const sweStudents = studentsByField.find(({ field }) => field === 'SWE');
       studentsByField.forEach(({ field, students }) => {
-        response += `Number of students in ${field}: ${students.length}. List: ${students.join(', ')}\n`;
+        if (field === 'CS' || field === 'SWE') {
+          const count = field === 'CS' ? csStudents.students.length : sweStudents.students.length;
+          response += `Number of students in ${field}: ${count}. List: ${students.join(', ')}\n`;
+        }
       });
       res.status(200).send(response);
     } catch (err) {
